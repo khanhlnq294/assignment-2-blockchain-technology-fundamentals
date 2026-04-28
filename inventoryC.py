@@ -1,12 +1,8 @@
 from crypto import mod_inverse 
 
-
 # Inventory C
+name = "C"
 Cp = 1014247300991039444864201518275018240361205111
 Cq = 904030450302158058469475048755214591704639633
 Ce = 1158749422015035388438057
-
-Cn = Cp * Cq
-Cphi = (Cp - 1) * (Cq - 1)
-Cd = mod_inverse(Ce, Cphi)
 
