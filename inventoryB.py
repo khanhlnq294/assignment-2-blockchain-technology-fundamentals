@@ -1,0 +1,12 @@
+from crypto import mod_inverse 
+
+
+# Inventory B
+Bp = 787435686772982288169641922308628444877260947
+Bq = 1325305233886096053310340418467385397239375379
+Be = 692450682143089563609787
+
+Bn = Bp * Bq
+Bphi = (Bp - 1) * (Bq - 1)
+Bd = mod_inverse(Be, Bphi)
+

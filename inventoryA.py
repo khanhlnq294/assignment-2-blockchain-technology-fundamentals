@@ -1,0 +1,11 @@
+from crypto import mod_inverse 
+
+# Inventory A
+Ap = 1210613765735147311106936311866593978079938707
+Aq = 1247842850282035753615951347964437248190231863
+Ae = 815459040813953176289801
+
+An = Ap * Aq
+Aphi = (Ap - 1) * (Aq - 1)
+Ad = mod_inverse(Ae, Aphi)
+

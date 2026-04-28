@@ -1,0 +1,12 @@
+from crypto import mod_inverse 
+
+
+# Inventory D
+Dp = 1287737200891425621338551020762858710281638317
+Dq = 1330909125725073469794953234151525201084537607
+De = 33981230465225879849295979
+
+Dn = Dp * Dq
+Dphi = (Dp - 1) * (Dq - 1)
+Dd = mod_inverse(De, Dphi)
+
