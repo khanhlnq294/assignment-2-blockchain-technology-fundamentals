@@ -1,4 +1,3 @@
-
 # modular exponentiation
 def mod_exp(base, exp, mod):
     result = 1

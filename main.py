@@ -24,9 +24,3 @@ for inventory in [inventoryA, inventoryB, inventoryC, inventoryD]:
     public_keys[inventory.name] = public_key
 
 
-
-
-
-
-
-
