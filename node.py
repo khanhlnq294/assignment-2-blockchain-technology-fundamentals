@@ -1,4 +1,4 @@
-from crypto import sign, verify
+from rsa_core import rsa_sign, rsa_verify, simple_hash
 
 # Node class to represent each inventory node
 class Node:
@@ -14,8 +14,10 @@ class Node:
         return {"message": message, "signature": signature, "Signer": self.name}
 
     def sign_message(self, message):
-        return sign(message, self.d, self.n)
+        hash_value = simple_hash(message)
+        return rsa_sign(hash_value, self.d, self.n)
 
     def verify_signature(self, message, signature, e, n):
-        valid = verify(message, signature, e, n)
+        hash_value = simple_hash(message)
+        valid = rsa_verify(hash_value, signature, e, n)
         return valid 
