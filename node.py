@@ -1,4 +1,4 @@
-from rsa_core import rsa_sign, rsa_verify, simple_hash
+from crypto_lib.rsa_core import rsa_sign, rsa_verify, simple_hash
 
 # Node class to represent each inventory node
 class Node:

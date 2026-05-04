@@ -1,4 +1,4 @@
-from rsa_core import mod_inverse 
+from crypto_lib.rsa_core import mod_inverse 
 from node import Node
 import keys_config 
 
