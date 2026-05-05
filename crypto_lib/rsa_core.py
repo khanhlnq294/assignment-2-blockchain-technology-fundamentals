@@ -42,3 +42,18 @@ def rsa_verify(message_hash, signature, e, n):
     # L3 slide 32:   h2 = s^e mod n; valid <=> h2 == H(M)
     return pow(signature, e, n) == message_hash
 #    return mod_exp(signature, e, n) == message_hash
+
+
+
+
+# Utility function to build RSA parameters from keys
+def build_rsa(keys):
+    p = keys["p"]
+    q = keys["q"]
+    e = keys["e"]
+    
+    n = p * q
+    phi = (p - 1) * (q - 1)
+    d = mod_inverse(e, phi)
+    
+    return {"e": e, "d": d, "n": n}

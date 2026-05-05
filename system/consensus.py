@@ -1,5 +1,5 @@
 from crypto_lib.rsa_core import rsa_verify
-
+import json
 
 def get_threshold(n):
     f = (n - 1) // 3
@@ -38,8 +38,10 @@ def run_pbft(packet, nodes, public_keys):
     if yes_count >= threshold:
         print("COMMIT: ACCEPTED")
 
+        record = json.loads(message)
+
         for node in nodes:
-            node.store(message)
+            node.store(record)
 
         return True
     
