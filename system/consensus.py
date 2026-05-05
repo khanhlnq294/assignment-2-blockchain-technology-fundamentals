@@ -1,22 +1,49 @@
-"""PBFT style """
+from crypto_lib.rsa_core import rsa_verify
 
-def bft_threshold(num_nodes):
-    # n >= 3f + 1   <=>   f = (n - 1) // 3   ;   --> threshold = 2f + 1
-    f = (num_nodes - 1) // 3
+
+def get_threshold(n):
+    f = (n - 1) // 3
     return 2 * f + 1
 
-def receiver_vote(signed_bundle, receiver_node):
-    record = signed_bundle["record"]
-    h_local = record_hash(record)
-    sig_ok = rsa_verify(h_local, signed_bundle["signature"], signed_bundle["originator_pub"])
-    return {"voter": receiver_node.name,
-            "vote" : "YES" if sig_ok else "NO"}
 
-def run_consensus_round(signed_bundle, all_nodes):
-    receivers = [n for n in all_nodes if n.name!=signed_bundle["originatore"]]
-    votes = [receiver_vote(signed_bundle, r) for r in receivers]
-    yes_count = 1 + sum(1 for v in votes if v["vote"] == "YES") # +1 = originator
-    threshold = bft_threshold(len(all_nodes))
-    return {"yes_count": yes_count, 
-            "threshold": threshold,
-            "receiver_votes": votes}
+def run_pbft(packet, nodes, public_keys):
+    message = packet["message"]
+    signature = packet["signature"]
+    sender = packet["sender"]
+
+    print("\n--- PBFT CONSENSUS ROUND ---")
+    print("Sender:", sender)
+    print("Message:", message)
+
+    threshold = get_threshold(len(nodes))
+    print("Threshold:", threshold)
+
+    votes = []
+
+    
+    for node in nodes:
+        pub = public_keys[sender]
+
+        valid = rsa_verify(message, signature, pub["e"], pub["n"])
+
+        print(f"{node.name} PREPARE vote:", "YES" if valid else "NO")
+
+        votes.append(valid)
+
+    yes_count = sum(votes)
+
+    print("\nYES votes:", yes_count)
+
+    
+    if yes_count >= threshold:
+        print("COMMIT: ACCEPTED")
+
+        for node in nodes:
+            node.store(message)
+
+        return True
+    
+
+    else:
+        print("COMMIT: REJECTED")
+        return False

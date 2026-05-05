@@ -12,6 +12,9 @@ class Node:
     def create_record(self, message):
         signature = self.sign_message(message)
         return {"message": message, "signature": signature, "Signer": self.name}
+    
+    def store(self, message):
+        self.records.append(message)
 
     def sign_message(self, message):
         hash_value = simple_hash(message)

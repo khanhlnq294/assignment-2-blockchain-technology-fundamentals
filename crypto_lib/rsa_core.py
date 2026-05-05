@@ -1,3 +1,14 @@
+# modular exponentiation
+def mod_exp(base, exp, mod):
+    result = 1
+    base = base % mod
+    while exp > 0:
+        if (exp % 2) == 1:
+            result = (result * base) % mod
+        exp = exp >> 1
+        base = (base * base) % mod
+    return result
+
 def extended_euclidean(a, b):
     old_r, r = a, b
     old_s, s = 1, 0
@@ -15,12 +26,19 @@ def mod_inverse(a, m):
         raise ValueError("No modular inverse exists.")
     return x % m
 
-def rsa_sign(message_hash_int, private_key):
+# simple hash function
+def simple_hash(message):
+    hash_value = 0
+    for char in message:
+        hash_value += ord(char)
+    return hash_value
+
+def rsa_sign(message_hash, d, n):
     # L3 slide 32:   s = H(M)^d mod n
-    d, n = private_key
-    return pow(message_hash_int, d, n)
+    return pow(message_hash, d, n)
+#    return mod_exp(message_hash, d, n)
  
-def rsa_verify(message_hash_int, signature, public_key):
+def rsa_verify(message_hash, signature, e, n):
     # L3 slide 32:   h2 = s^e mod n; valid <=> h2 == H(M)
-    e, n = public_key
-    return pow(signature, e, n) == message_hash_int
+    return pow(signature, e, n) == message_hash
+#    return mod_exp(signature, e, n) == message_hash
