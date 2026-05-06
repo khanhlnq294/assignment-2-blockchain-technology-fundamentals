@@ -1,9 +1,16 @@
-import workflow as wf
+import system.workflow as wf
+
+
+# ----------------------- Main execution --------------------------
 # Main execution
 nodes, public_keys = wf.initalise_system()
-
 # Reset data files for clean demonstration
 wf.reset_data(nodes)
+# -----------------------------------------------------------------
+
+
+
+
 
 # Creates new record (node, public_keys, creator_name, item_id, qty, price, location)
 wf.create_record_workflow(nodes, public_keys, "A", "001", 5, 10, "A")

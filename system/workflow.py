@@ -1,8 +1,8 @@
 from crypto_lib.rsa_core import simple_hash, encrypt, decrypt, build_rsa
-from node import Node
+from system.node import Node
 import keys_config 
 import crypto_lib.multi_sign as multi_sign
-from system.consensus import run_pbft
+from system.consensus import run_bft
 import json
 
 
@@ -80,7 +80,7 @@ def create_record_workflow(nodes, public_keys, creator_name, item_id, qty, price
         "sender": creator.name
     }
 
-    accepted = run_pbft(pbft_packet, nodes, public_keys)
+    accepted = run_bft(pbft_packet, nodes, public_keys)
 
     return accepted
 
