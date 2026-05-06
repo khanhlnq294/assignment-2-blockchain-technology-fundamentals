@@ -6,7 +6,7 @@ def get_threshold(n):
     return 2 * f + 1
 
 
-def run_bft(packet, nodes, public_keys):
+def run_pbft(packet, nodes, public_keys):
     message = packet["message"]
     signature = packet["signature"]
     sender = packet["sender"]
