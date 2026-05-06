@@ -26,7 +26,7 @@ def mod_inverse(a, m):
         raise ValueError("No modular inverse exists.")
     return x % m
 
-# simple hash function
+# Simple hash function to simulate sha256 (for demonstration purposes only)
 def simple_hash(message):
     hash_value = 0
     for char in message:
@@ -36,12 +36,20 @@ def simple_hash(message):
 def rsa_sign(message_hash, d, n):
     # L3 slide 32:   s = H(M)^d mod n
     return pow(message_hash, d, n)
-#    return mod_exp(message_hash, d, n)
+    #return mod_exp(message_hash, d, n)
  
 def rsa_verify(message_hash, signature, e, n):
     # L3 slide 32:   h2 = s^e mod n; valid <=> h2 == H(M)
     return pow(signature, e, n) == message_hash
-#    return mod_exp(signature, e, n) == message_hash
+    #return mod_exp(signature, e, n) == message_hash
+
+def encrypt(message, e, n):
+    return pow(message, e, n)
+    #return mod_exp(message, e, n)
+
+def decrypt(ciphertext, d, n):
+    return pow(ciphertext, d, n)
+    #return mod_exp(ciphertext, d, n)
 
 
 

@@ -1,4 +1,4 @@
-from crypto_lib.rsa_core import rsa_verify
+from crypto_lib.rsa_core import rsa_verify, simple_hash
 import json
 
 def get_threshold(n):
@@ -13,7 +13,7 @@ def run_pbft(packet, nodes, public_keys):
 
     print("\n--- PBFT CONSENSUS ROUND ---")
     print("Sender:", sender)
-    print("Message:", message)
+    print("New record:", message)
 
     threshold = get_threshold(len(nodes))
     print("Threshold:", threshold)
@@ -23,8 +23,8 @@ def run_pbft(packet, nodes, public_keys):
     
     for node in nodes:
         pub = public_keys[sender]
-
-        valid = rsa_verify(message, signature, pub["e"], pub["n"])
+        hash_value = simple_hash(message)
+        valid = rsa_verify(hash_value, signature, pub["e"], pub["n"])
 
         print(f"{node.name} PREPARE vote:", "YES" if valid else "NO")
 
@@ -36,7 +36,7 @@ def run_pbft(packet, nodes, public_keys):
 
     
     if yes_count >= threshold:
-        print("COMMIT: ACCEPTED")
+        print("COMMIT: ACCEPTED\n")
 
         record = json.loads(message)
 

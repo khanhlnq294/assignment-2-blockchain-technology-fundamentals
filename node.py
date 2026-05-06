@@ -25,7 +25,7 @@ class Node:
         return {"record": record, "signature": signature, "Signer": self.name}
     
     def store(self, record):
-        with open(self.file_path, "a") as f:
+        with open(self.file_path, "r") as f:
             data = json.load(f)
         data.append(record)
         with open (self.file_path, "w") as f:
