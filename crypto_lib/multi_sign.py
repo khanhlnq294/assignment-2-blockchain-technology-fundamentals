@@ -1,7 +1,9 @@
-from crypto_lib.rsa_core import simple_hash
+from crypto_lib.hashing import simple_hash
 import keys_config
 
-
+#===============================
+# KEY GENERATION
+#===============================
 def generate_g_values(nodes, pkg_rsa):
     g_values = {}
 
@@ -14,8 +16,9 @@ def generate_g_values(nodes, pkg_rsa):
 
     return g_values
 
-
-
+#===============================
+# Round-1 commitment (each signer):
+#===============================
 
 def compute_t_values(nodes, pkg_rsa):
     t_values = {}
@@ -30,17 +33,17 @@ def compute_t_values(nodes, pkg_rsa):
     return t_values
 
 
-
 def compute_t(t_values, n):
     t = 1
     for val in t_values.values():
         t = (t * val) % n
     return t
 
-
+#===============================
+# Round-2 partial signatures:
+#===============================
 def compute_h(message, t):
     return simple_hash(str(t) + message)
-
 
 def compute_s_values(nodes, g_values, h, n):
     s_values = {}
@@ -55,16 +58,15 @@ def compute_s_values(nodes, g_values, h, n):
 
     return s_values
 
-
-
 def compute_S(s_values, n):
     S = 1
     for s in s_values.values():
         S = (S * s) % n
     return S
 
-
-
+#===============================
+# Verification:
+#===============================
 def verify_signature(S, t, h, nodes, pkg_rsa):
     n = pkg_rsa["n"]
     e = pkg_rsa["e"]

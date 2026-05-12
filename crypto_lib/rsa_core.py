@@ -1,3 +1,18 @@
+from math import gcd
+
+# Utility function to build RSA parameters from keys
+def build_rsa(keys):
+    p = keys["p"]
+    q = keys["q"]
+    e = keys["e"]
+    
+    n = p * q
+    phi = (p - 1) * (q - 1)
+    d = mod_inverse(e, phi)
+    
+    return {"e": e, "d": d, "n": n}
+
+
 # modular exponentiation
 def mod_exp(base, exp, mod):
     result = 1
@@ -52,16 +67,3 @@ def decrypt(ciphertext, d, n):
     #return mod_exp(ciphertext, d, n)
 
 
-
-
-# Utility function to build RSA parameters from keys
-def build_rsa(keys):
-    p = keys["p"]
-    q = keys["q"]
-    e = keys["e"]
-    
-    n = p * q
-    phi = (p - 1) * (q - 1)
-    d = mod_inverse(e, phi)
-    
-    return {"e": e, "d": d, "n": n}

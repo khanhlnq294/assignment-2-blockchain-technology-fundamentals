@@ -38,10 +38,6 @@ def reset_data(nodes):
         with open(node.file_path, "w") as f:
             json.dump(seed_data[node.name], f, indent=4)
 
-
-
-
-
 # Build nodes and public keys from inventory data
 def build_node(inventory):
    rsa = build_rsa(inventory)
