@@ -8,7 +8,7 @@ from keys_config import (
     INVENTORY_IDENTITIES, INVENTORY_RANDOM_R,
 )
 from nodes.inventory_node import InventoryNode
-from nodes.pkg import PKG
+from nodes.PKG import PKG
 from nodes.procurement import ProcurementOfficer
 
 
