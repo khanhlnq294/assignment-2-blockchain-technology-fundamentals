@@ -4,47 +4,54 @@ import json
 
 
 def get_threshold(n):
-    """BFT threshold: 2f+1 where f = (n-1)//3."""
+    """BFT acceptance threshold: 2f + 1 where f = (n-1)//3."""
     f = (n - 1) // 3
     return 2 * f + 1
 
 
 def run_pbft(packet, nodes, public_keys):
+    """One PBFT-style voting round.
+    Each receiver verifies the originator's signature; if at least
+    threshold YES votes, every node commits the record to local storage.
+    """
     message   = packet["message"]
     signature = packet["signature"]
     sender    = packet["sender"]
 
-    print("\n--- BFT CONSENSUS ROUND ---")
-    print("Sender:", sender)
-    print("New record:", message)
+    print("\n" + "=" * 60)
+    print("  TASK 2: BFT CONSENSUS ROUND")
+    print("=" * 60)
+    print(f"  Sender (originator): Inventory {sender}")
+    print(f"  Record (canonical) : {message}")
 
     threshold = get_threshold(len(nodes))
-    print("Threshold:", threshold)
+    print(f"  n = {len(nodes)}, f = {(len(nodes) - 1) // 3}, threshold = {threshold}")
 
+    print("\n  PREPARE phase: each receiver verifies the signature.")
     votes = []
+    sender_pub = public_keys[sender]
 
     for node in nodes:
         if node.name == sender:
-            # Originator implicitly votes YES -- they signed the record
-            print(f"{node.name} PREPARE vote: YES (originator)")
+            print(f"    Node {node.name}: YES (originator -- implicit)")
             votes.append(True)
             continue
 
-        pub = public_keys[sender]
-        h = simple_hash(message) % pub["n"]
-        valid = rsa_verify(h, signature, pub["e"], pub["n"])
-        print(f"{node.name} PREPARE vote:", "YES" if valid else "NO")
+        h = simple_hash(message) % sender_pub["n"]
+        valid = rsa_verify(h, signature, sender_pub["e"], sender_pub["n"])
+        outcome = "YES" if valid else "NO"
+        print(f"    Node {node.name}: verifying s^e mod n vs H(M)... {outcome}")
         votes.append(valid)
 
     yes_count = sum(votes)
-    print("\nYES votes:", yes_count)
+    print(f"\n  YES votes: {yes_count} / threshold {threshold}")
 
     if yes_count >= threshold:
-        print("COMMIT: ACCEPTED\n")
+        print("  DECISION: COMMIT (record will be appended on every node)")
         record = json.loads(message)
         for node in nodes:
             node.store(record)
         return True
     else:
-        print("COMMIT: REJECTED")
+        print("  DECISION: REJECT (insufficient votes)")
         return False

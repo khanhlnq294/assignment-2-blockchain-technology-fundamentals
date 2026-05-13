@@ -33,7 +33,7 @@ def extended_euclidean(a, b):
         old_r, r = r, old_r - q * r
         old_s, s = s, old_s - q * s
         old_t, t = t, old_t - q * t
-    return old_r, old_s, old_t       # gcd, x, y    such that a*x + b*y = gcd
+    return old_r, old_s, old_t
  
 def mod_inverse(a, m):
     g, x, _ = extended_euclidean(a, m)
