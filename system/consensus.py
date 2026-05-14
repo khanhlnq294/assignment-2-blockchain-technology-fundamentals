@@ -6,16 +6,12 @@ import json
 
 
 def get_threshold(n):
-    """BFT acceptance threshold: 2f + 1 where f = (n-1)//3."""
+    """BFT acceptance threshold: 2f + 1 where f = (n-1) // 3."""
     f = (n - 1) // 3
     return 2 * f + 1
 
 
 def run_pbft(packet, nodes, public_keys):
-    """One PBFT-style voting round.
-    Each receiver verifies the originator's signature; if at least
-    threshold YES votes, every node commits the record to local storage.
-    """
     message   = packet["message"]
     signature = packet["signature"]
     sender    = packet["sender"]
@@ -51,7 +47,7 @@ def run_pbft(packet, nodes, public_keys):
     print("Hash during verify:", simple_hash(message))
 
     if yes_count >= threshold:
-        print("  DECISION: COMMIT (record will be appended on every node)")
+        print("  DECISION: COMMIT ")
         record = json.loads(message)
         for node in nodes:
             node.store(record)
