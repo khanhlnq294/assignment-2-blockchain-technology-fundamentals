@@ -1,3 +1,5 @@
+from email.mime import message
+
 from crypto_lib.hashing import simple_hash
 from crypto_lib.rsa_core import rsa_verify
 import json
@@ -37,7 +39,7 @@ def run_pbft(packet, nodes, public_keys):
             votes.append(True)
             continue
 
-        h = simple_hash(message) % sender_pub["n"]
+        h = simple_hash(message)
         valid = rsa_verify(h, signature, sender_pub["e"], sender_pub["n"])
         outcome = "YES" if valid else "NO"
         print(f"    Node {node.name}: verifying s^e mod n vs H(M)... {outcome}")
@@ -45,6 +47,8 @@ def run_pbft(packet, nodes, public_keys):
 
     yes_count = sum(votes)
     print(f"\n  YES votes: {yes_count} / threshold {threshold}")
+    print("Signed message:", message)
+    print("Hash during verify:", simple_hash(message))
 
     if yes_count >= threshold:
         print("  DECISION: COMMIT (record will be appended on every node)")

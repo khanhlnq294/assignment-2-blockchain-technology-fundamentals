@@ -13,11 +13,6 @@ class InventoryNode:
         self.n = rsa["n"]
         self.file_path = file_path
 
-        # Harn scheme parameters (set by PKG during bootstrap)
-        self.harn_secret_g = None
-        self.identity = None
-        self.random_r = None
-
         # Create data file if it doesn't exist
         if not os.path.exists(self.file_path):
             with open(self.file_path, "w") as f:
@@ -32,7 +27,7 @@ class InventoryNode:
             "location": location,
             "originator": self.name
         }
-        message = json.dumps(record, sort_keys=True)
+        message = json.dumps(record)
         signature = self.sign_message(message)
         return {"record": record, "signature": signature, "Signer": self.name}
 
@@ -46,7 +41,7 @@ class InventoryNode:
 
     def sign_message(self, message):
         """Hash the message with SHA-256 and sign with RSA private key."""
-        h = simple_hash(message) % self.n   # keep hash within modulus
+        h = simple_hash(message)   # keep hash within modulus
         return rsa_sign(h, self.d, self.n)
 
     def verify_signature_from(self, message, signature, e, n):

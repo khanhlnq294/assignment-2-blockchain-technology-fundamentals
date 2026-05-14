@@ -60,11 +60,11 @@ def create_record_workflow(nodes, public_keys, creator_name,
 
     # Task 1: originator signs the record
     packet  = creator.create_record(item_id, qty, price, location)
-    message = json.dumps(packet["record"], sort_keys=True)
+    message = json.dumps(packet["record"])
 
     print(f"\n  Record built: {packet['record']}")
     print(f"  Canonical form: {message}")
-    print(f"  H(M) [SHA-256 as int, mod n]: {simple_hash(message) % creator.n}")
+    print(f"  H(M) [SHA-256 as int]: {simple_hash(message)}")
     print(f"  RSA signature s = H(M)^d mod n: {packet['signature']}")
 
     pbft_packet = {
