@@ -26,12 +26,5 @@
         "price": 18,
         "location": "A",
         "originator": "SEED"
-    },
-    {
-        "item_id": "001",
-        "qty": 5,
-        "price": 10,
-        "location": "A",
-        "originator": "A"
     }
 ]

@@ -16,14 +16,14 @@ SEED_RECORDS = [
 
 
 def reset_data(nodes):
-    """Reset each node's JSON database to the four starter records."""
+    #Reset each node's JSON database to the four starter records.
     for node in nodes:
         with open(node.file_path, "w") as f:
             json.dump(SEED_RECORDS, f, indent=4)
 
 
 def initalise_system():
-    """Build the four inventory nodes and collect their public keys."""
+    #Build the four inventory nodes and collect their public keys.
     all_key_params = [
         keys_config.INVENTORY_A_KEYS,
         keys_config.INVENTORY_B_KEYS,
@@ -42,10 +42,8 @@ def initalise_system():
     return nodes, public_keys
 
 
-# ============================================================================
-# Task 1 + Task 2: Insert a new inventory record
-# ============================================================================
 
+# Task 1 + Task 2: Insert a new inventory record
 def create_record_workflow(nodes, public_keys, creator_name,
                            item_id, qty, price, location):
     """The originator signs a new record; all nodes vote via PBFT."""
@@ -76,10 +74,7 @@ def create_record_workflow(nodes, public_keys, creator_name,
     return run_pbft(pbft_packet, nodes, public_keys)
 
 
-# ============================================================================
 # Query helper
-# ============================================================================
-
 def process_query(item_id, node):
     """Sum qty across all records for the given item_id."""
     total_qty = 0
@@ -91,10 +86,7 @@ def process_query(item_id, node):
     return {"item_id": item_id, "total_qty": total_qty}
 
 
-# ============================================================================
 # Task 3 part A: Query + Harn multi-signature + RSA encryption
-# ============================================================================
-
 def query_workflow(nodes, item_id):
     print("\n" + "=" * 60)
     print("  TASK 3: QUERY WORKFLOW (Procurement Officer side)")
@@ -174,10 +166,7 @@ def query_workflow(nodes, item_id):
     return {"status": "SUCCESS", "cipher": cipher, "package": package}
 
 
-# ============================================================================
 # Task 3 part B: Officer-side receive, decrypt, re-verify
-# ============================================================================
-
 def verify_received_package(cipher, package, nodes):
     """Officer decrypts the cipher and re-verifies the multi-signature."""
     print("\n" + "=" * 60)

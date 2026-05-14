@@ -19,7 +19,7 @@ class InventoryNode:
                 json.dump([], f)
 
     def create_record(self, item_id, qty, price, location):
-        """Build and sign a new record. Includes originator field."""
+        #Build and sign a new record. Includes originator field.
         record = {
             "item_id": item_id,
             "qty": qty,
@@ -32,7 +32,7 @@ class InventoryNode:
         return {"record": record, "signature": signature, "Signer": self.name}
 
     def store(self, record):
-        """Append a record to this node's JSON database."""
+        #Append a record to this node's JSON database.
         with open(self.file_path, "r") as f:
             data = json.load(f)
         data.append(record)
@@ -40,11 +40,11 @@ class InventoryNode:
             json.dump(data, f, indent=4)
 
     def sign_message(self, message):
-        """Hash the message with SHA-256 and sign with RSA private key."""
+        #Hash the message with SHA-256 and sign with RSA private key.
         h = simple_hash(message)   
         return rsa_sign(h, self.d, self.n)
 
     def verify_signature_from(self, message, signature, e, n):
-        """Verify a signature using the sender's public key."""
+        #Verify a signature using the sender's public key.
         h = simple_hash(message) % n
         return rsa_verify(h, signature, e, n)

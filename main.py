@@ -5,7 +5,7 @@ import json
 
 
 def show_database(nodes):
-    """Print each node's current inventory records."""
+    #Print each node's current inventory records.
     print("\n" + "=" * 60)
     print("  LOCAL DATABASES")
     print("=" * 60)
@@ -107,7 +107,6 @@ def prompt_new_record(nodes, public_keys):
         print("\n  >>> Record rejected by consensus.")
 
 def prompt_query(nodes):
-    """Interactive prompt for running a Procurement Officer query."""
     item_id = input("\nEnter item ID to query (e.g. 001): ").strip()
 
     response = wf.query_workflow(nodes, item_id)

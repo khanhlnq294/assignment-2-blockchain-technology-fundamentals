@@ -4,7 +4,7 @@ import json
 
 
 def get_threshold(n):
-    """PBFT acceptance threshold: 2f + 1 where f = (n-1)//3."""
+    #PBFT acceptance threshold: 2f + 1 where f = (n-1) // 3.
     f = (n - 1) // 3
     return 2 * f + 1
 
