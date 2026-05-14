@@ -1,12 +1,10 @@
-from email.mime import message
-
 from crypto_lib.hashing import simple_hash
 from crypto_lib.rsa_core import rsa_verify
 import json
 
 
 def get_threshold(n):
-    """BFT acceptance threshold: 2f + 1 where f = (n-1)//3."""
+    """PBFT acceptance threshold: 2f + 1 where f = (n-1)//3."""
     f = (n - 1) // 3
     return 2 * f + 1
 
@@ -21,10 +19,10 @@ def run_pbft(packet, nodes, public_keys):
     sender    = packet["sender"]
 
     print("\n" + "=" * 60)
-    print("  TASK 2: BFT CONSENSUS ROUND")
+    print("  TASK 2: PBFT CONSENSUS ROUND")
     print("=" * 60)
     print(f"  Sender (originator): Inventory {sender}")
-    print(f"  Record (canonical) : {message}")
+    print(f"  Record : {message}")
 
     threshold = get_threshold(len(nodes))
     print(f"  n = {len(nodes)}, f = {(len(nodes) - 1) // 3}, threshold = {threshold}")
