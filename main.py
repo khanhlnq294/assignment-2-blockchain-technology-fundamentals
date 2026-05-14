@@ -61,7 +61,6 @@ def print_key_parameters():
 
 
 def prompt_new_record(nodes, public_keys):
-    """Interactive prompt for inserting a new inventory record."""
     names = [n.name for n in nodes]
     print("\n--- Create a new inventory record ---")
 
@@ -71,23 +70,35 @@ def prompt_new_record(nodes, public_keys):
             break
         print("  Invalid choice, try again.")
 
-    item_id = input("Item ID (e.g. 005)          : ").strip()
+    while True:
+        item_id = input("Item ID (e.g. 001)          : ").strip()
+        if item_id and item_id.isdigit():
+            break
+        print("  Item ID must be a number (e.g. 001), try again.")
 
     while True:
         try:
             qty = int(input("Quantity (integer)          : ").strip())
-            break
+            if qty > 0:
+                break
+            print("  Quantity must be greater than 0.")
         except ValueError:
             print("  Please enter a whole number.")
 
     while True:
         try:
             price = int(input("Price (integer)             : ").strip())
-            break
+            if price >= 0:
+                break
+            print("  Price cannot be negative.")
         except ValueError:
             print("  Please enter a whole number.")
 
-    location = input("Location (A/B/C/D)          : ").strip().upper() or "A"
+    while True:
+        location = input("Location (A/B/C/D)          : ").strip().upper()
+        if location in names:
+            break
+        print(f"  Location must be one of {'/'.join(names)}, try again.")
 
     accepted = wf.create_record_workflow(
         nodes, public_keys, org, item_id, qty, price, location)
@@ -96,7 +107,6 @@ def prompt_new_record(nodes, public_keys):
         print(f"\n  >>> Record for item {item_id} committed to all nodes.")
     else:
         print("\n  >>> Record rejected by consensus.")
-
 
 def prompt_query(nodes):
     """Interactive prompt for running a Procurement Officer query."""

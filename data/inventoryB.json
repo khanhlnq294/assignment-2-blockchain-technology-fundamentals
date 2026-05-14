@@ -28,10 +28,10 @@
         "originator": "SEED"
     },
     {
-        "item_id": "001",
+        "item_id": "005",
+        "qty": 3,
+        "price": 12,
         "location": "A",
-        "originator": "A",
-        "price": 10,
-        "qty": 5
+        "originator": "A"
     }
 ]
