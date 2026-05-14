@@ -1,10 +1,3 @@
-"""
-selftest.py
-===========
-Standalone tests for the three assignment tasks.
-Run from the project root:   python selftest.py
-"""
-
 import system.workflow as wf
 from crypto_lib.rsa_core import build_rsa, rsa_sign, rsa_verify
 from crypto_lib.hashing import simple_hash
@@ -16,23 +9,26 @@ PASS = "[PASS]"
 FAIL = "[FAIL]"
 
 def check(label, got, want):
-    status = PASS if got == want else FAIL
+    if got == want:
+        status = PASS
+    else: 
+        status = FAIL
     print(f"  {status} {label}: got={got}, want={want}")
 
 def run_tests():
     nodes, public_keys = wf.initalise_system()
     wf.reset_data(nodes)
 
-    # ------------------------------------------------------------------
+    # -----------------------------------TEST 1-----------------------------------
     print("\nTest 1: clean RSA signature verifies")
     rsa = build_rsa(keys_config.INVENTORY_A_KEYS)
-    msg = "test message"
+    msg = "test message 123"
     h = simple_hash(msg) % rsa["n"]
     sig = rsa_sign(h, rsa["d"], rsa["n"])
     result = rsa_verify(h, sig, rsa["e"], rsa["n"])
     check("RSA verify(clean)", result, True)
 
-    # ------------------------------------------------------------------
+    # -----------------------------------TEST 2-----------------------------------
     print("\nTest 2: tampered record fails RSA verification")
     rsa = build_rsa(keys_config.INVENTORY_A_KEYS)
     msg = '{"item_id": "001", "qty": 5}'
@@ -43,7 +39,7 @@ def run_tests():
     result = rsa_verify(h2, sig, rsa["e"], rsa["n"])
     check("RSA verify(tampered)", result, False)
 
-    # ------------------------------------------------------------------
+    # -----------------------------------TEST 3-----------------------------------
     print("\nTest 3: tampered signature fails RSA verification")
     rsa = build_rsa(keys_config.INVENTORY_A_KEYS)
     msg = "another test"
@@ -52,7 +48,7 @@ def run_tests():
     result = rsa_verify(h, sig + 1, rsa["e"], rsa["n"])
     check("RSA verify(tampered sig)", result, False)
 
-    # ------------------------------------------------------------------
+    # -----------------------------------TEST 4-----------------------------------
     print("\nTest 4: clean Harn multi-signature verifies")
     pkg_rsa = build_rsa(keys_config.PKG_KEYS)
     message = json.dumps({"item_id": "001", "total_qty": 37}, sort_keys=True)
@@ -65,18 +61,18 @@ def run_tests():
     result = multi_sign.verify_signature(S, t, h, nodes, pkg_rsa)
     check("Harn verify(clean)", result, True)
 
-    # ------------------------------------------------------------------
+    # -----------------------------------TEST 5-----------------------------------
     print("\nTest 5: tampered message fails Harn verification")
     h_bad = multi_sign.compute_h("tampered message", t)
     result = multi_sign.verify_signature(S, t, h_bad, nodes, pkg_rsa)
     check("Harn verify(tampered m)", result, False)
 
-    # ------------------------------------------------------------------
+    # -----------------------------------TEST 6-----------------------------------
     print("\nTest 6: tampered S fails Harn verification")
     result = multi_sign.verify_signature(S + 1, t, h, nodes, pkg_rsa)
     check("Harn verify(tampered S)", result, False)
 
-    # ------------------------------------------------------------------
+    # -----------------------------------TEST 7-----------------------------------
     print("\nTest 7: PBFT rejects a record signed by a different node")
     from system.consensus import run_pbft
     rsa_b = build_rsa(keys_config.INVENTORY_B_KEYS)
@@ -88,7 +84,7 @@ def run_tests():
     accepted = run_pbft(packet, nodes, public_keys)
     check("PBFT accepted(bad sig)", accepted, False)
 
-    # ------------------------------------------------------------------
+    # -----------------------------------TEST 8-----------------------------------
     print("\nTest 8: full end-to-end create + query + verify")
     wf.reset_data(nodes)
     wf.create_record_workflow(nodes, public_keys, "A", "001", 5, 10, "A")
