@@ -21,8 +21,6 @@ def show_database(nodes):
 
 
 def print_key_parameters():
-    """Display all hardcoded key material so a marker can verify the
-    from-scratch RSA key derivation (n = p*q, d = e^-1 mod phi(n))."""
     print("\n" + "=" * 60)
     print("  KEY PARAMETERS")
     print("=" * 60)
