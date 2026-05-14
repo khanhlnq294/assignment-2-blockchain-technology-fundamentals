@@ -96,15 +96,6 @@ def process_query(item_id, node):
 # ============================================================================
 
 def query_workflow(nodes, item_id):
-    """
-    Steps map directly to the Harn identity-based multi-signature scheme:
-       Phase 1: key extraction        g_i = ID_i^d mod n
-       Phase 2: round-1 commitment    t_i = r_i^e mod n; t = prod(t_i)
-       Phase 3: round-2 signature     h = H(t || m); s_i = g_i * r_i^h
-                                       S = prod(s_i)
-       Phase 4: verification          S^e == (prod ID_i) * t^h
-    """
-
     print("\n" + "=" * 60)
     print("  TASK 3: QUERY WORKFLOW (Procurement Officer side)")
     print("=" * 60)
