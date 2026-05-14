@@ -41,22 +41,10 @@ class InventoryNode:
 
     def sign_message(self, message):
         """Hash the message with SHA-256 and sign with RSA private key."""
-        h = simple_hash(message)   # keep hash within modulus
+        h = simple_hash(message)   
         return rsa_sign(h, self.d, self.n)
 
     def verify_signature_from(self, message, signature, e, n):
         """Verify a signature using the sender's public key."""
         h = simple_hash(message) % n
         return rsa_verify(h, signature, e, n)
-
-    def load_records(self):
-        """Load all records from this node's JSON database."""
-        try:
-            with open(self.file_path, "r") as f:
-                return json.load(f)
-        except FileNotFoundError:
-            return []
-
-    @property
-    def records(self):
-        return self.load_records()

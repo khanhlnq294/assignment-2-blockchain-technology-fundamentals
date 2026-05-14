@@ -63,7 +63,6 @@ def create_record_workflow(nodes, public_keys, creator_name,
     message = json.dumps(packet["record"])
 
     print(f"\n  Record built: {packet['record']}")
-    print(f"  Canonical form: {message}")
     print(f"  H(M) [SHA-256 as int]: {simple_hash(message)}")
     print(f"  RSA signature s = H(M)^d mod n: {packet['signature']}")
 

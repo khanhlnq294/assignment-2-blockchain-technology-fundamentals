@@ -1,5 +1,3 @@
-from math import gcd
-
 # Utility function to build RSA parameters from keys
 def build_rsa(keys):
     p = keys["p"]
@@ -40,13 +38,6 @@ def mod_inverse(a, m):
     if g != 1:
         raise ValueError("No modular inverse exists.")
     return x % m
-
-# Simple hash function to simulate sha256 (for demonstration purposes only)
-def simple_hash(message):
-    hash_value = 0
-    for char in message:
-        hash_value += ord(char)
-    return hash_value
 
 def rsa_sign(message_hash, d, n):
     # L3 slide 32:   s = H(M)^d mod n
